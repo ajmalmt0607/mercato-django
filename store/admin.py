@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 # Importing the Product model from the current app’s models file.
-from store.models import Product
+from store.models import Product, Variation
 
 
 # Creating a custom admin class to define how the Product model appears in the admin site.
@@ -18,4 +18,13 @@ class ProductAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('product_name',)}
 
 
+class VariationAdmin(admin.ModelAdmin):
+    list_display = ('product', 'variation_category',
+                    'variation_value', 'is_active')
+    list_editable = ('is_active',)  # now this is active is editable
+    list_filter = ('product', 'variation_category',
+                   'variation_value', 'is_active')  # we can get a filter in right side admin panel
+
+
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Variation, VariationAdmin)

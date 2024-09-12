@@ -3,9 +3,15 @@
 {% load static %}
 {% block content %}
 <!-- ========================= SECTION PAGETOP ========================= -->
+<!-- prettier-ignore -->
 <section class="section-pagetop py-5 bg">
     <div class="container">
-        <h2 class="title-page">Our Store</h2>
+        <!-- Here checking search in the url pattern -->
+        {% if 'search' in request.path %}
+            <h2 class="title-page">Search Result</h2>
+        {% else %}
+            <h2 class="title-page">Our Store</h2>
+        {% endif %}
     </div>
     <!-- container //  -->
 </section>
@@ -169,66 +175,118 @@
                 <!-- sect-heading -->
 
                 <!-- row start -->
+                <!-- prettier-ignore -->
                 <div class="row">
                     <!-- col start -->
-                    {% for product in products %}
-                    <div class="col-md-4">
-                        <figure class="card card-product-grid">
-                            <a href="{{ product.get_url }}" class="img-wrap">
-                                <img src="{{ product.images.url }}" />
-                            </a>
-                            <!-- img-wrap. -->
-                            <figcaption class="info-wrap">
-                                <div class="fix-height">
-                                    <a
-                                        href="{{ product.get_url }}"
-                                        class="title"
-                                        >{{ product.product_name }}</a
-                                    >
-                                    <div class="price-wrap mt-2">
-                                        <span class="price"
-                                            >{{ product.price }}</span
-                                        >
-                                        <del class="price-old">$1980</del>
-                                    </div>
-                                    <!-- price-wrap.// -->
-                                </div>
-                                <a
-                                    href="{{ product.get_url }}"
-                                    class="btn btn-block btn-outline-dark"
-                                    >View product<i class="bi bi-eye ml-2"></i>
+                    <!-- prettier-ignore -->
+                    {% if products %} 
+                        {% for product in products %}
+                        <div class="col-md-4">
+                            <figure class="card card-product-grid">
+                                <a href="{{ product.get_url }}" class="img-wrap">
+                                    <img src="{{ product.images.url }}" />
                                 </a>
-                                <a href="#" class="btn btn-block btn-dark"
-                                    >Add to cart<i
-                                        class="bi bi bi-bag ml-2"
-                                    ></i>
-                                </a>
-                            </figcaption>
-                        </figure>
-                    </div>
-                    {% endfor %}
+                                <!-- img-wrap. -->
+                                <!-- prettier-ignore -->
+                                <figcaption class="info-wrap">
+                                        <div class="fix-height">
+                                            <a
+                                                href="{{ product.get_url }}"
+                                                class="title"
+                                                >{{ product.product_name }}</a
+                                            >
+                                            <div class="price-wrap mt-2">
+                                                <span class="price"
+                                                    >{{ product.price }}</span
+                                                >
+                                                <del class="price-old">$1980</del>
+                                            </div>
+                                            <!-- price-wrap.// -->
+                                        </div>
+                                        <!-- ---------- -->
+                                        <!-- <a
+                                            href="{{ product.get_url }}"
+                                            class="btn btn-block btn-outline-dark"
+                                            >View product<i class="bi bi-eye ml-2"></i>
+                                        </a>
+                                        <a
+                                            href="{% url 'add_cart' product.id %}"
+                                            class="btn btn-block btn-dark"
+                                            >Add to cart<i
+                                                class="bi bi bi-bag ml-2"
+                                            ></i>
+                                        </a> -->
+                                        <!-- ---------- -->
+                                        <a href="{{ product.get_url }}" class="btn btn-block btn-outline-dark">
+                                            View product <i class="bi bi-eye ml-2"></i>
+                                        </a>
+                                        {% if product.stock > 0 %}
+                                            {% if product.id in cart_product_ids %}
+                                                <!-- If the product is in the cart, show a "Go to Cart" button -->
+                                                <a href="{% url 'cart' %}" class="btn btn-block btn-success">
+                                                    In Cart <i class="bi bi-cart-check ml-2"></i>
+                                                </a>
+                                            {% else %}
+                                                <!-- If the product is not in the cart, show the "Add to Cart" button -->
+                                                <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-dark">
+                                                    Add to Cart <i class="bi bi-bag ml-2"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% else %}
+                                            <!-- If the product is out of stock, show a red "Out of Stock" button -->
+                                            <a href="#" class="btn btn-block btn-danger disabled">
+                                                Out of Stock <i class="bi bi-x-circle ml-2"></i>
+                                            </a>
+                                        {% endif %}
+                                    </figcaption>
+                            </figure>
+                        </div>
+                        {% endfor %} 
+                    {% else %}
+                        <div>
+                            <h2>No Results Found. Please try again</h2>
+                        </div>
+                    {% endif %}
                     <!-- col end -->
                 </div>
                 <!-- row end. -->
-
+                <!-- prettier-ignore -->
                 <nav class="mt-4" aria-label="Page navigation sample">
+                    {% if products.has_other_pages %}
                     <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Previous</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">2</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+                        {% if products.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{products.previous_page_number}}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">Previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% for i in products.paginator.page_range %}
+                            {% if products.number == i %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">{{i}}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{i}}">{{i}}</a>
+                                </li>
+                            {% endif %} 
+                        {% endfor %}
+
+                        {% if products.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{products.next_page_number}}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        {% endif %}
                     </ul>
+                    {% endif %}
                 </nav>
             </main>
             <!-- col.// -->

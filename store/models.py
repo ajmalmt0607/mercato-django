@@ -55,3 +55,50 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+
+
+# Custom Manager class to handle variations
+class VariationManager(models.Manager):
+    # Method to filter and return active color variations
+    def colors(self):
+        # 'super' calls the parent class's filter method with specific conditions
+        return super(VariationManager, self).filter(variation_category='color', is_active=True)
+
+    # Method to filter and return active size variations
+    def sizes(self):
+        # Similar to colors, but filters by 'size' instead of 'color'
+        return super(VariationManager, self).filter(variation_category='size', is_active=True)
+
+
+# Tuple for specifying variation category choices (color or size)
+variation_category_choice = (
+    # First value is what's stored in DB, second is the display value
+    ('color', 'color'),
+    ('size', 'size')
+)
+
+# Main model for product variations
+
+
+class Variation(models.Model):
+    # Foreign key to link each variation to a specific product (many-to-one relationship)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+
+    # Field to store whether the variation is a color or size, with predefined choices
+    variation_category = models.CharField(
+        max_length=100, choices=variation_category_choice)
+
+    # The actual value of the variation, e.g., "Red" for color or "Large" for size
+    variation_value = models.CharField(max_length=100)
+
+    # Boolean field to indicate whether this variation is active or not
+    is_active = models.BooleanField(default=True)
+
+    # Automatically sets the current date and time when the variation is created or modified
+    created_date = models.DateTimeField(auto_now=True)
+
+    # Tells Django to use the custom manager (VariationManager) for the Variation model
+    objects = VariationManager()  # Now, the methods like colors() and sizes() can be used
+
+    def __str__(self):
+        return self.variation_value  # Returns a string representation of the variation_value
