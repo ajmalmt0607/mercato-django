@@ -32,8 +32,8 @@
                                 aria-expanded="true"
                                 class=""
                             >
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Categories</h6>
+                                <i class="icon-control fa fa-chevron-down text-dark"></i>
+                                <h6 class="title text-dark">Categories</h6>
                             </a>
                         </header>
                         <div
@@ -70,8 +70,8 @@
                                 aria-expanded="true"
                                 class=""
                             >
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Sizes</h6>
+                                <i class="icon-control fa fa-chevron-down text-dark"></i>
+                                <h6 class="title text-dark">Sizes</h6>
                             </a>
                         </header>
                         <div
@@ -114,8 +114,8 @@
                                 aria-expanded="true"
                                 class=""
                             >
-                                <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Price range</h6>
+                                <i class="icon-control fa fa-chevron-down text-dark"></i>
+                                <h6 class="title text-dark">Price range</h6>
                             </a>
                         </header>
                         <div
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <!-- form-row.// -->
-                                <button class="btn btn-block btn-primary">
+                                <button class="btn btn-block btn-dark">
                                     Apply
                                 </button>
                             </div>
@@ -217,27 +217,9 @@
                                             ></i>
                                         </a> -->
                                         <!-- ---------- -->
-                                        <a href="{{ product.get_url }}" class="btn btn-block btn-outline-dark">
+                                        <a href="{{ product.get_url }}" class="btn btn-block btn-dark">
                                             View product <i class="bi bi-eye ml-2"></i>
                                         </a>
-                                        {% if product.stock > 0 %}
-                                            {% if product.id in cart_product_ids %}
-                                                <!-- If the product is in the cart, show a "Go to Cart" button -->
-                                                <a href="{% url 'cart' %}" class="btn btn-block btn-success">
-                                                    In Cart <i class="bi bi-cart-check ml-2"></i>
-                                                </a>
-                                            {% else %}
-                                                <!-- If the product is not in the cart, show the "Add to Cart" button -->
-                                                <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-dark">
-                                                    Add to Cart <i class="bi bi-bag ml-2"></i>
-                                                </a>
-                                            {% endif %}
-                                        {% else %}
-                                            <!-- If the product is out of stock, show a red "Out of Stock" button -->
-                                            <a href="#" class="btn btn-block btn-danger disabled">
-                                                Out of Stock <i class="bi bi-x-circle ml-2"></i>
-                                            </a>
-                                        {% endif %}
                                     </figcaption>
                             </figure>
                         </div>

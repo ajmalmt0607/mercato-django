@@ -65,7 +65,7 @@
                             class="btn btn-dark dropdown-toggle"
                             data-toggle="dropdown"
                         >
-                            <i class="fa fa-bars"></i> All category
+                            <i class="fa fa-bars"></i> Category
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{% url 'store' %}"
@@ -83,8 +83,11 @@
                     <!-- category-wrap.// -->
                 </div>
                 <!-- col.// -->
-                <a href="{% url 'store' %}" class="btn btn-outline-dark"
-                    >Store</a
+                <a href="{% url 'home' %}" class="mr-3 ml-2 btn btn-dark font-weight-bold" 
+                    >Home</a
+                >
+                <a href="{% url 'store' %}" class="mr-2 btn btn-dark font-weight-bold" 
+                    >Products</a
                 >
                 <div class="col-lg col-md-6 col-sm-12 col">
                     <form
@@ -114,41 +117,70 @@
                 <div class="col-lg-3 col-sm-6 col-8 order-2 order-lg-3">
                     <div class="d-flex justify-content-end mb-3 mb-lg-0">
                         <div class="d-flex align-items-center">
-                            <div class="widget-header">
-                                <small class="title text-muted"
-                                    >Welcome guest!</small
-                                >
-                                <!-- <div>
-                                    <a href="./signin.html">Sign in</a>
-                                    <span class="dark-transp"> | </span>
-                                    <a href="./register.html">Register</a>
-                                </div> -->
-                            </div>
-                            <!-- User icon with hover pop-up -->
-                            <div class="user-menu ml-2">
-                                <a
-                                    href="#"
-                                    class="icon icon-sm rounded-circle border widget-header user-icon"
-                                >
-                                    <i class="fa fa-user"></i>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a
-                                        href="./signin.html"
-                                        class="dropdown-item"
-                                        >Sign in</a
+                            {% if user.id is None %}
+                                <div class="widget-header">
+                                    <small class="title text-muted"
+                                        >Welcome guest!</small
                                     >
+                                    <!-- <div>
+                                        <a href="./signin.html">Sign in</a>
+                                        <span class="dark-transp"> | </span>
+                                        <a href="./register.html">Register</a>
+                                    </div> -->
+                                </div>
+                                <!-- User icon with hover pop-up -->
+                                <div class="user-menu ml-2">
                                     <a
-                                        href="./register.html"
-                                        class="dropdown-item"
-                                        >Register</a
+                                        href="#"
+                                        class="icon icon-sm rounded-circle border widget-header user-icon"
+                                    >
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a
+                                            href="{% url 'login' %}"
+                                            class="dropdown-item"
+                                            >Sign in</a
+                                        >
+                                        <a
+                                            href="{% url 'register' %}"
+                                            class="dropdown-item"
+                                            >Register</a
+                                        >
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="widget-header">
+                                    <small class="title text-muted"
+                                        >Welcome {{user.first_name}}</small
                                     >
                                 </div>
-                            </div>
+                                <!-- User icon with hover pop-up -->
+                                <div class="user-menu ml-2">
+                                    <a
+                                        href="#"
+                                        class="icon icon-sm rounded-circle border widget-header user-icon"
+                                    >
+                                        <i class="fa fa-user"></i>
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a
+                                            href="#"
+                                            class="dropdown-item"
+                                            >Dashboard</a
+                                        >
+                                        <a
+                                            href="{% url 'logout' %}"
+                                            class="dropdown-item"
+                                            >Logout</a
+                                        >
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
 
                         <!-- Wishlist icon -->
-                        <a href="./wishlist.html" class="widget-header ml-3">
+                        <a href="./wishlist.html" class="widget-header ml-3 ">
                             <div class="icon icon-sm rounded-circle border">
                                 <i class="fa fa-heart"></i>
                                 <!-- Wishlist icon -->

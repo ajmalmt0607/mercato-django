@@ -38,6 +38,7 @@ class MyAccountManager(BaseUserManager):
         )
         # Assign superuser permissions
         user.is_admin = True
+        # The is_active field is a built-in Django field for user activation.
         user.is_active = True
         user.is_staff = True
         user.is_superadmin = True
@@ -56,7 +57,7 @@ class Account(AbstractBaseUser):
     email = models.EmailField(
         max_length=100, unique=True)  # Unique email field
     phone_number = models.CharField(
-        max_length=100, unique=True)  # Unique phone number field
+        max_length=50)  # Unique phone number field
 
     # Required fields for user model
     date_joined = models.DateTimeField(
@@ -65,6 +66,7 @@ class Account(AbstractBaseUser):
         auto_now_add=True)  # Timestamp of last login
     is_admin = models.BooleanField(default=False)  # Admin status
     is_staff = models.BooleanField(default=False)  # Staff status
+    # The is_active field is a built-in Django field for user activation.
     is_active = models.BooleanField(default=False)  # Active status
     is_superadmin = models.BooleanField(default=False)  # Superadmin status
 
