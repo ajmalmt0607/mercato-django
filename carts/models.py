@@ -1,5 +1,6 @@
 from django.db import models
 
+from accounts.models import Account
 from store.models import Product, Variation
 
 
@@ -14,6 +15,8 @@ class Cart(models.Model):
 
 # Defining the CartItem model, which represents an item in a shopping cart
 class CartItem(models.Model):
+    # when the user account is delete this cartitem also delete
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, null=True)
     # ForeignKey relationship to the Product model. This creates a many-to-one relationship,
     # meaning each CartItem is linked to one Product, but a Product can be in many CartItems.
     # 'on_delete=models.CASCADE' ensures that if the related Product is deleted,
@@ -26,7 +29,7 @@ class CartItem(models.Model):
     # ForeignKey relationship to the Cart model. This links each CartItem to a specific Cart.
     # 'on_delete=models.CASCADE' means if the Cart is deleted, the CartItems associated with
     # that Cart will also be deleted.
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, null=True)
 
     # Integer field to store the quantity of the product in the cart. This represents
     # how many units of the product are added to the cart.

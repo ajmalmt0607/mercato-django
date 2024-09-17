@@ -150,3 +150,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'mercatokart.care@gmail.com'
 EMAIL_HOST_PASSWORD = 'ksav dwrl xccu xunz'
 EMAIL_USE_TLS = True
+
+
+# settings.py
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

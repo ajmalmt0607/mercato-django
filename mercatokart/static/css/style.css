@@ -1,3 +1,9 @@
+.custom-col-5 {
+    width: 20%; /* Each product takes up 20% of the container */
+}
+
+
+
 .d-flex {
     display: flex;
     align-items: center; /* Vertically aligns the welcome text and icon */

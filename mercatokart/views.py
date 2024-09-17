@@ -4,6 +4,7 @@ from django.shortcuts import render
 
 # Import the Product model from the store app's models file.
 # The Product model likely represents products in your store.
+from category.models import Category
 from store.models import Product
 
 
@@ -13,12 +14,14 @@ def home(request):
     # .all() is a QuerySet method
     # filter() is a method that narrows down the QuerySet by applying conditions.
     products = Product.objects.all().filter(is_available=True)
+    categories = Category.objects.all()  # Fetch all categories
 
     # Create a context dictionary containing the queried products.
     # This context will be passed to the template to render the list of available products.
     context = {
         # 'product' is the key, and 'products' is the value containing the queried products.
         'products': products,
+        'categories': categories,
     }
 
     # Render the 'home.html' template, passing in the request and the context.

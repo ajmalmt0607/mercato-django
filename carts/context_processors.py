@@ -18,8 +18,13 @@ def counter(request):
         try:
             # Retrieve the cart(s) matching the current user's cart ID using `_cart_id`.
             cart = Cart.objects.filter(cart_id=_cart_id(request))
-            # Get all `CartItem` objects that belong to the first cart in the list (using `cart[:1]`).
-            cart_items = CartItem.objects.all().filter(cart=cart[:1])
+            # if user is authenticated
+            if request.user.is_authenticated:
+                # take all the cartitems of current user
+                cart_items = CartItem.objects.all().filter(user=request.user)
+            else:
+                # Get all `CartItem` objects - take the first cart cartitems in the list (using `cart[:1]`).
+                cart_items = CartItem.objects.all().filter(cart=cart[:1])
 
             for cart_item in cart_items:  # Iterate over the retrieved `CartItem` objects.
                 # Add the quantity of each `CartItem` to `cart_count`.
