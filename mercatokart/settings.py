@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'store',
     'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,7 @@ EMAIL_USE_TLS = True
 
 # settings.py
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Paypal integration
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
