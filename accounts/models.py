@@ -76,6 +76,9 @@ class Account(AbstractBaseUser):
 
     objects = MyAccountManager()  # Use the custom manager for this model
 
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
     # User-created function: Return the user's email as the string representation
     def __str__(self):
         return self.email

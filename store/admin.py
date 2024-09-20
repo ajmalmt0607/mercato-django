@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 # Importing the Product model from the current app’s models file.
-from store.models import Product, Variation
+from store.models import Product, Variation, ReviewRating
 
 
 # Creating a custom admin class to define how the Product model appears in the admin site.
@@ -28,3 +28,4 @@ class VariationAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Variation, VariationAdmin)
+admin.site.register(ReviewRating)
