@@ -1,6 +1,6 @@
 from typing import Any
 from django import forms
-from .models import Account
+from .models import Account, UserProfile
 
 
 class RegistrationForm(forms.ModelForm):
@@ -41,3 +41,34 @@ class RegistrationForm(forms.ModelForm):
             raise forms.ValidationError(
                 "Password does not match"
             )
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('first_name', 'last_name', 'phone_number')
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        # above like also give class name element, But we having many element this is the effiecient way
+        for field in self.fields:
+            # then now our form fields get style
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class UserProfileForm(forms.ModelForm):
+    # This to remove current showing profile image link in edit profile form
+    profile_picture = forms.ImageField(
+        required=False, error_messages={'invalid': ("image files only")}, widget=forms.FileInput)
+
+    class Meta:
+        model = UserProfile
+        fields = ('address_line_1', 'address_line_2',
+                  'city', 'state', 'country', 'profile_picture')
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        # above like also give class name element, But we having many element this is the effiecient way
+        for field in self.fields:
+            # then now our form fields get style
+            self.fields[field].widget.attrs['class'] = 'form-control'

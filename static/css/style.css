@@ -1,0 +1,49 @@
+.custom-col-5 {
+    width: 20%; /* Each product takes up 20% of the container */
+}
+
+
+
+.d-flex {
+    display: flex;
+    align-items: center; /* Vertically aligns the welcome text and icon */
+}
+
+.user-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 160px;
+}
+
+.user-menu:hover .dropdown-menu {
+    display: block;
+}
+
+.user-icon {
+    cursor: pointer;
+}
+
+.dropdown-item {
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    color: #333;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}

@@ -46,6 +46,8 @@ class Product(models.Model):
     # Automatically updates the field to the current date each time the product is saved.
     modified_date = models.DateField(auto_now=True)
 
+    featured = models.BooleanField(default=False)  # Add this field
+
     # This is the function for products goto single page
     # reverse method first argument is product_detail its url name
     # first argument is self.category.slug category field slug field and next category slug field
@@ -130,3 +132,16 @@ class ReviewRating(models.Model):
 
     def __str__(self):
         return self.subject
+
+
+class ProductGallery(models.Model):
+    product = models.ForeignKey(
+        Product, default=None, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="store/products", max_length=255)
+
+    def __str__(self):
+        return self.product.product_name
+
+    class Meta:
+        verbose_name = 'productgallery'
+        verbose_name_plural = 'product gallery'
