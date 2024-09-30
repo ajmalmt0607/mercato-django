@@ -52,10 +52,10 @@
                         <img src="{{ product.images.url }}" />
                     </a>
                     <figcaption class="info-wrap">
-                        <a href="{{ product.get_url }}" class="title" class="title" style="display: block; font-size: 15px; font-weight: 600; color: #333; text-decoration: none; margin-bottom: 8px;"
+                        <a href="{{ product.get_url }}" class="title" class="title" style="display: block; font-size: 15px; font-weight: 600; color: #333; text-decoration: none; margin-bottom: 0px;"
                             >{{ product.product_name }}</a
                         >
-                        <div class="price mt-1" style="font-size: 18px; color: #000000; font-weight: bold; margin-bottom: 8px;" >${{ product.price }}</div>
+                        <div class="price" style="font-size: 18px; color: #000000; font-weight: bold; margin-bottom: 4px;" >${{ product.price }}</div>
                         <div class="rating-star">
                             <span>
                                 <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
@@ -65,6 +65,9 @@
                                 <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
                             </span>
                         </div>
+                        <a href="{{ product.get_url }}" class="btn btn-block btn-dark mt-2">
+                            View product <i class="bi bi-eye ml-2"></i>
+                        </a>
                     </figcaption>
                 </div>
             </div>
@@ -90,10 +93,10 @@
                         <img src="{{ product.images.url }}" />
                     </a>
                     <figcaption class="info-wrap">
-                        <a href="{{ product.get_url }}" class="title" style="display: block; font-size: 15px; font-weight: 600; color: #333; text-decoration: none; margin-bottom: 8px;"
+                        <a href="{{ product.get_url }}" class="title" style="display: block; font-size: 15px; font-weight: 600; color: #333; text-decoration: none; margin-bottom: 0px;"
                             >{{ product.product_name }}</a
                         >
-                        <div class="price mt-1" style="font-size: 18px; color: #000000; font-weight: bold; margin-bottom: 8px;" >${{ product.price }}</div>
+                        <div class="price" style="font-size: 18px; color: #000000; font-weight: bold; margin-bottom: 4px;" >${{ product.price }}</div>
                         <!-- price-wrap.// -->
                         <div class="rating-star">
                             <span>
@@ -104,6 +107,9 @@
                                 <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
                             </span>
                         </div>
+                        <a href="{{ product.get_url }}" class="btn btn-block btn-dark mt-2">
+                            View product <i class="bi bi-eye ml-2"></i>
+                        </a>
                     </figcaption>
                 </div>
             </div>
@@ -113,7 +119,7 @@
     </div>
     <!-- container // -->
 </section>
-<section class="section-intro padding-y-sm mb-4">
+<section class="section-intro padding-y-sm mb-3">
     <div class="container">
         <div class="intro-banner-wrap">
             <img

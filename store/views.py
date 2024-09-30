@@ -11,7 +11,7 @@ from category.models import Category  # Importing Category model
 from orders.models import OrderProduct
 from store.forms import ReviewForm
 # Importing Product model
-from store.models import Product, ProductGallery, ReviewRating
+from store.models import Product, ProductGallery, ReviewRating, Variation
 
 
 # def store(request, category_slug=None):  # View function, accepts request and optional category_slug
@@ -42,45 +42,92 @@ from store.models import Product, ProductGallery, ReviewRating
 #     return render(request, 'store/store.html', context)
 
 
+# def store(request, category_slug=None):
+#     categories = None
+#     products = None
+
+#     # Fetch products based on the category slug if provided
+#     if category_slug is not None:
+#         categories = get_object_or_404(Category, slug=category_slug)
+#         products = Product.objects.filter(
+#             category=categories, is_available=True)
+#         # paginator code
+#         paginator = Paginator(products, 6)
+#         page = request.GET.get('page')  # Here get the page= value
+#         # here from all product above we take only 6, then we send this context
+#         # for ot find previous and next page
+#         paged_products = paginator.get_page(page)
+#     else:
+#         products = Product.objects.filter(
+#             is_available=True).order_by('id')  # here we getting all products
+#         # paginator code
+#         paginator = Paginator(products, 6)
+#         page = request.GET.get('page')
+#         # here from all product above we take only 6, then we send this context
+#         # for ot find previous and next page
+#         paged_products = paginator.get_page(page)
+
+#     # Get all the products in the cart for the current session in a single query
+#     cart_items = CartItem.objects.filter(cart__cart_id=_cart_id(request))
+
+#     # Create a set of product IDs in the cart for fast lookup
+#     cart_product_ids = set(cart_items.values_list('product_id', flat=True))
+
+#     # Prepare the context with the product data and their cart status
+#     context = {
+#         'products':  paged_products,
+#         'cart_product_ids': cart_product_ids,  # Set of product IDs in the cart
+#         'product_count': products.count(),  # using product count function we get count
+#     }
+
+#     # Render the template with the product list and in-cart info
+#     return render(request, 'store/store.html', context)
+
+
 def store(request, category_slug=None):
-    categories = None
-    products = None
+    categories = Category.objects.all()
+    products = Product.objects.filter(is_available=True)
 
-    # Fetch products based on the category slug if provided
-    if category_slug is not None:
-        categories = get_object_or_404(Category, slug=category_slug)
-        products = Product.objects.filter(
-            category=categories, is_available=True)
-        # paginator code
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')  # Here get the page= value
-        # here from all product above we take only 6, then we send this context
-        # for ot find previous and next page
-        paged_products = paginator.get_page(page)
-    else:
-        products = Product.objects.filter(
-            is_available=True).order_by('id')  # here we getting all products
-        # paginator code
-        paginator = Paginator(products, 6)
-        page = request.GET.get('page')
-        # here from all product above we take only 6, then we send this context
-        # for ot find previous and next page
-        paged_products = paginator.get_page(page)
+    # If a category_slug is provided, filter products by that category
+    if category_slug:
+        products = products.filter(category__slug=category_slug)
 
-    # Get all the products in the cart for the current session in a single query
-    cart_items = CartItem.objects.filter(cart__cart_id=_cart_id(request))
+    # Get selected categories and sizes from the request
+    selected_categories = request.GET.getlist('categories')
+    sizes = request.GET.getlist('sizes')
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    dbsizes = Variation.objects.filter(
+        variation_category='size', is_active=True)
 
-    # Create a set of product IDs in the cart for fast lookup
-    cart_product_ids = set(cart_items.values_list('product_id', flat=True))
+    # Filter products based on selected categories
+    if selected_categories:
+        products = products.filter(category__slug__in=selected_categories)
 
-    # Prepare the context with the product data and their cart status
+    # Apply size filter if sizes are selected
+    if sizes:
+        products = products.filter(variation__variation_value__in=sizes)
+
+    # Apply price range filter if specified
+    if min_price and max_price:
+        products = products.filter(price__gte=min_price, price__lte=max_price)
+
+    # Paginator code
+    paginator = Paginator(products, 6)
+    page = request.GET.get('page')
+    paged_products = paginator.get_page(page)
+
     context = {
-        'products':  paged_products,
-        'cart_product_ids': cart_product_ids,  # Set of product IDs in the cart
-        'product_count': products.count(),  # using product count function we get count
+        'products': paged_products,
+        'product_count': products.count(),
+        'dbsizes': dbsizes,
+        'categories': categories,
+        'selected_categories': selected_categories,
+        'sizes': sizes,
+        'min_price': min_price,
+        'max_price': max_price,
     }
 
-    # Render the template with the product list and in-cart info
     return render(request, 'store/store.html', context)
 
 
